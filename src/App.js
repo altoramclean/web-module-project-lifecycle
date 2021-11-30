@@ -1,13 +1,15 @@
 import React from 'react';
+
 import axios from 'axios';
 import User from './components/User';
 import FollowerList from './components/FollowerList';
 
+
 class App extends React.Component {
   state = {
-    user: '',
+    userProfile: {},
     followers: [],
-    input: userName
+    input: ''
   }
 
   handleChange = evt => {
@@ -23,50 +25,49 @@ class App extends React.Component {
       .then(resp => {
         this.setState({
           ...this.state,
-          user: resp.data
+          userProfile: resp.data
         })
       })
   }
-componentDidMount(){
+componentDidMount() {
   axios.get('https://api.github.com/users/altoramclean')
   .then(resp => {
     this.setState({
       ...this.state,
-      user: resp.data
+      userProfile: resp.data
     })
   })
   .catch(err => {
     console.error(err)
   })
 }
-render(){
-  return (
-    <div>
-      <h1>Github</h1>
-      <div className="search-bar">
-            <form onSubmit={this.handleSubmit}>
-                <input
-                  type = 'text'
-                  value = {this.state.input}
-                  onChange = {this.handleChange}
-                  placeholder = 'Enter Github '
-                />
-                <button>Search</button>
-            </form>
+render() {
+return(
 
-            <User user={this.state.user}/>
-    </div>
-  )
-}
-<FollowerList followers={this.state.followers}/>
+  <div>
+    <h1>Github Card</h1>
+
+    <div className="search-bar">
+        <form onSubmit={this.handleSubmit}>
+            <input
+              type = 'text'
+              value = {this.state.input}
+              onChange = {this.handleChange}
+              placeholder = 'Enter Github '
+            />
+            <button>Search</button>
+        </form>
+
+        <User user={this.state.userProfile}/>
+        <FollowerList followers={this.state.followers}/>
         </div>
-  )
+
+      </div>
+    );
   }
 }
-
-
-
-
-
-
 export default App;
+
+
+
+
